@@ -1,0 +1,35 @@
+model:
+  unet:
+    # 1B: num_head 32 hidden_size 2048
+    sample_size: 64
+    in_channels: 3
+    out_channels: 3
+    layers_per_block: 3
+    block_out_channels:
+      - 128
+      - 256
+      - 512
+      - 512
+    down_block_types: 
+      - DownBlock2D
+      - DownBlock2D
+      - AttnDownBlock2D
+      - AttnDownBlock2D
+
+    up_block_types: 
+      - AttnUpBlock2D
+      - AttnUpBlock2D
+      - UpBlock2D
+      - UpBlock2D
+  # For noise scheduler
+  noise_scheduler:
+    type: ddpm
+    num_train_timesteps: 1000
+    num_inference_timesteps: 50
+    beta_schedule: squaredcos_cap_v2  # Critical choice
+    clip_sample: False
+  ema:
+    ema_max_decay: 0.9999
+    use_ema_warmup: True
+    inv_gamma: 1
+    power: 0.75

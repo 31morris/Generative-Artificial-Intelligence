@@ -1,0 +1,6 @@
+此程式需要安裝以下套件：
+1.pandas（用於讀取 CSV 檔案）  
+2.groq（用於與 Groq API 互動）
+
+安裝方式（使用 pip）：  
+pip install pandas groq

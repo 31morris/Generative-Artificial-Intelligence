@@ -1,0 +1,40 @@
+model:
+  unet:
+    # 1B: num_head 32 hidden_size 2048
+    sample_size: 32
+    in_channels: 4
+    out_channels: 4
+    layers_per_block: 3
+    block_out_channels:
+      - 160
+      - 320
+      - 640
+      - 768
+    down_block_types: 
+      - DownBlock2D
+      - CrossAttnDownBlock2D
+      - CrossAttnDownBlock2D
+      - CrossAttnDownBlock2D
+
+    up_block_types: 
+      - CrossAttnUpBlock2D
+      - CrossAttnUpBlock2D
+      - CrossAttnUpBlock2D
+      - UpBlock2D
+
+    cross_attention_dim: 512
+    mid_block_type: "UNetMidBlock2DCrossAttn"
+    norm_num_groups: 32 
+    attention_head_dim: 8 
+  # For noise scheduler
+  noise_scheduler:
+    type: ddpm
+    num_train_timesteps: 1000
+    num_inference_timesteps: 50
+    beta_schedule: squaredcos_cap_v2  # Critical choice
+    clip_sample: False
+  ema:
+    ema_max_decay: 0.9999
+    use_ema_warmup: True
+    inv_gamma: 1
+    power: 0.75
